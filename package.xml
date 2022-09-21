@@ -21,7 +21,6 @@
   <exec_depend condition="$ROS_VERSION == 2">ament_cmake</exec_depend>
   <depend>boost</depend>
   <depend>eigen</depend>
-  <depend>eigenpy</depend>
   <depend>graphviz</depend>
   <depend>pinocchio</depend>
 
