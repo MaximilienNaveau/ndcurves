@@ -14,7 +14,7 @@ set(${PROJECT_NAME}_WRAP_SOURCES
 set(wrap ${PROJECT_NAME}_wrap)
 set(${wrap}_INSTALL_DIR ${PYTHON_SITELIB}/${PROJECT_NAME})
 add_library(${wrap} SHARED ${${PROJECT_NAME}_WRAP_SOURCES})
-get_relative_rpath(${${wrap}_INSTALL_DIR} ${wrap}_INSTALL_RPATH)
+set(${${wrap}_INSTALL_DIR} ${wrap}_INSTALL_RPATH)
 set_target_properties(
   ${wrap}
   PROPERTIES PREFIX ""
