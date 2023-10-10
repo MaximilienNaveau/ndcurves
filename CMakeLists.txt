@@ -39,7 +39,7 @@ cmake_dependent_option(
   "Generate the Python stubs associated to the Python library" OFF
   BUILD_PYTHON_INTERFACE ON)
 
-# set_default_cmake_build_type("Release")
+set_default_cmake_build_type("Release")
 
 # Project definition
 compute_project_args(PROJECT_ARGS LANGUAGES CXX)
