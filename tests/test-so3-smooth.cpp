@@ -373,6 +373,22 @@ BOOST_AUTO_TEST_CASE(derivate_computation_check) {
   // Real-time critical
   Eigen::internal::set_is_malloc_allowed(true);
 
+  // Log the data
+  std::ofstream file;
+  file.open("/tmp/angular_vel_acc.csv"); 
+  for (std::size_t i = 0; i < nb_sample; ++i) {
+    for(Eigen::Index j = 0 ; j < traj_vel_discr[i].size() ; ++j)
+    {
+      file << traj_vel_discr[i](j) << " ";
+    }
+    for(Eigen::Index j = 0 ; j < traj_acc_discr[i].size() ; ++j)
+    {
+      file << traj_acc_discr[i](j) << " ";
+    }
+    file << "\b" << std::endl;
+  }
+  file.close();
+
   // Continuity test.
   for (std::size_t i = 1; i < traj_vel_discr.size(); ++i) {
     point3_t error = traj_vel_discr[i] - traj_vel_discr[i - 1];
