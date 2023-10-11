@@ -372,21 +372,25 @@ BOOST_AUTO_TEST_CASE(derivate_computation_check) {
   Eigen::internal::set_is_malloc_allowed(true);
 
   point3_t vel_max;
-  vel_max << traj_vel_discr.row(0).maxCoeff(), traj_vel_discr.row(1).maxCoeff(), traj_vel_discr.row(2).maxCoeff();
+  vel_max << traj_vel_discr.row(0).maxCoeff(), traj_vel_discr.row(1).maxCoeff(),
+      traj_vel_discr.row(2).maxCoeff();
   point3_t vel_min;
-  vel_min << traj_vel_discr.row(0).minCoeff(), traj_vel_discr.row(1).minCoeff(), traj_vel_discr.row(2).minCoeff();
-  point3_t vel_amplitude = (vel_max-vel_min).array().abs();
+  vel_min << traj_vel_discr.row(0).minCoeff(), traj_vel_discr.row(1).minCoeff(),
+      traj_vel_discr.row(2).minCoeff();
+  point3_t vel_amplitude = (vel_max - vel_min).array().abs();
   point3_t acc_max;
-  acc_max << traj_acc_discr.row(0).maxCoeff(), traj_acc_discr.row(1).maxCoeff(), traj_acc_discr.row(2).maxCoeff();
+  acc_max << traj_acc_discr.row(0).maxCoeff(), traj_acc_discr.row(1).maxCoeff(),
+      traj_acc_discr.row(2).maxCoeff();
   point3_t acc_min;
-  acc_min << traj_acc_discr.row(0).minCoeff(), traj_acc_discr.row(1).minCoeff(), traj_acc_discr.row(2).minCoeff();
-  point3_t acc_amplitude = (acc_max-acc_min).array().abs();
+  acc_min << traj_acc_discr.row(0).minCoeff(), traj_acc_discr.row(1).minCoeff(),
+      traj_acc_discr.row(2).minCoeff();
+  point3_t acc_amplitude = (acc_max - acc_min).array().abs();
 
   // Continuity test.
   for (std::size_t i = 1; i < nb_sample; ++i) {
     point3_t error = traj_vel_discr.col(i) - traj_vel_discr.col(i - 1);
     for (Eigen::Index j = 0; j < error.size(); ++j) {
-        BOOST_CHECK_LE(std::abs(error(j)), 1e-0 * vel_amplitude(j));
+      BOOST_CHECK_LE(std::abs(error(j)), 1e-0 * vel_amplitude(j));
     }
   }
 
@@ -396,7 +400,6 @@ BOOST_AUTO_TEST_CASE(derivate_computation_check) {
       BOOST_CHECK_LE(std::abs(error(j)), 1e-0 * acc_amplitude(j));
     }
   }
-
 }
 
 BOOST_AUTO_TEST_SUITE_END()
