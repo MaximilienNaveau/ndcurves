@@ -150,8 +150,8 @@ struct SO3Linear : public curve_abc<Time, Numeric, Safe, matrix3_t, point3_t> {
   bool isApprox(
       const SO3Linear_t& other,
       const Numeric prec = Eigen::NumTraits<Numeric>::dummy_precision()) const {
-    return ndcurves::isApprox<Numeric>(T_min_, other.min()) &&
-           ndcurves::isApprox<Numeric>(T_max_, other.max()) &&
+    return EigenDoubleTraits<Numeric>::isApprox(T_min_, other.min()) &&
+           EigenDoubleTraits<Numeric>::isApprox(T_max_, other.max()) &&
            dim_ == other.dim() &&
            init_rot_.toRotationMatrix().isApprox(
                other.init_rot_.toRotationMatrix(), prec) &&

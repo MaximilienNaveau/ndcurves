@@ -48,7 +48,7 @@ struct polynomial : public curve_abc<Time, Numeric, Safe, Point> {
   /// \brief Empty constructor. Curve obtained this way can not perform other
   /// class functions.
   ///
-  polynomial() : curve_abc_t(), dim_(0), T_min_(0), T_max_(0), degree_(0) {}
+  polynomial() : curve_abc_t(), dim_(0), degree_(0), T_min_(0), T_max_(0) {}
 
   /// \brief Constructor.
   /// \param coefficients : a reference to an Eigen matrix where each column is
@@ -328,8 +328,8 @@ struct polynomial : public curve_abc<Time, Numeric, Safe, Point> {
   bool isApprox(
       const polynomial_t& other,
       const Numeric prec = Eigen::NumTraits<Numeric>::dummy_precision()) const {
-    return ndcurves::isApprox<num_t>(T_min_, other.min()) &&
-           ndcurves::isApprox<num_t>(T_max_, other.max()) &&
+    return EigenDoubleTraits<num_t>::isApprox(T_min_, other.min()) &&
+           EigenDoubleTraits<num_t>::isApprox(T_max_, other.max()) &&
            dim_ == other.dim() && degree_ == other.degree() &&
            coefficients_.isApprox(other.coefficients_, prec);
   }

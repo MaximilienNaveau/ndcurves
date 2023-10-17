@@ -172,12 +172,12 @@ struct sinusoidal : public curve_abc<Time, Numeric, Safe, Point> {
   virtual bool isApprox(
       const sinusoidal_t& other,
       const Numeric prec = Eigen::NumTraits<Numeric>::dummy_precision()) const {
-    return ndcurves::isApprox<time_t>(T_min_, other.min()) &&
-           ndcurves::isApprox<time_t>(T_max_, other.max()) &&
+    return EigenDoubleTraits<time_t>::isApprox(T_min_, other.min()) &&
+           EigenDoubleTraits<time_t>::isApprox(T_max_, other.max()) &&
            dim_ == other.dim() && p0_.isApprox(other.p0_, prec) &&
            amplitude_.isApprox(other.amplitude_, prec) &&
-           ndcurves::isApprox<time_t>(T_, other.T_) &&
-           ndcurves::isApprox<time_t>(phi_, other.phi_);
+           EigenDoubleTraits<time_t>::isApprox(T_, other.T_) &&
+           EigenDoubleTraits<time_t>::isApprox(phi_, other.phi_);
   }
 
   virtual bool isApprox(

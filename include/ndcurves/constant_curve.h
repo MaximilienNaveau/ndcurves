@@ -132,8 +132,8 @@ struct constant_curve
   virtual bool isApprox(
       const constant_curve_t& other,
       const Numeric prec = Eigen::NumTraits<Numeric>::dummy_precision()) const {
-    return ndcurves::isApprox<num_t>(T_min_, other.min()) &&
-           ndcurves::isApprox<num_t>(T_max_, other.max()) &&
+    return EigenDoubleTraits<num_t>::isApprox(T_min_, other.min()) &&
+           EigenDoubleTraits<num_t>::isApprox(T_max_, other.max()) &&
            dim_ == other.dim() && value_.isApprox(other.value_, prec);
   }
 

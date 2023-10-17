@@ -17,6 +17,7 @@
 
 #include "MathDefs.h"
 #include "bezier_curve.h"
+#include "cross_implementation.h"
 #include "curve_abc.h"
 #include "serialization/archive.hpp"
 #include "serialization/eigen-matrix.hpp"
@@ -218,6 +219,11 @@ struct linear_variable : public serialization::Serializable {
       const linear_variable_t& other,
       const double prec = Eigen::NumTraits<Numeric>::dummy_precision()) const {
     return (*this - other).norm() < prec;
+  }
+
+  bool isMuchSmallerThan(
+      const double prec = Eigen::NumTraits<Numeric>::dummy_precision()) const {
+    return *this.isMuchSmallerThan(1, prec);
   }
 
   const matrix_x_t& B() const { return B_; }

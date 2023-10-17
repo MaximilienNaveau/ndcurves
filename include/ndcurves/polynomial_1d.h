@@ -13,7 +13,7 @@
 #ifndef NDCURVES_POLYNOMIAL_1D_H
 #define NDCURVES_POLYNOMIAL_1D_H
 
-#include "ndcurves/polynomial.h"
+// #include "ndcurves/polynomial.h"
 
 namespace ndcurves {
 /// \class polynomial.
@@ -43,10 +43,10 @@ struct polynomial<Time, Numeric, Safe, Numeric, std::vector<Numeric> >
   polynomial()
       : curve_abc_t(),
         dim_(1),
-        t_min_(0),
-        t_max_(1),
+        coefficients_(),
         degree_(0),
-        coefficients_() {}
+        t_min_(0),
+        t_max_(1) {}
 
   /// \brief Constructor.
   /// \param coefficients : a reference to an Eigen matrix where each column is
@@ -337,8 +337,8 @@ struct polynomial<Time, Numeric, Safe, Numeric, std::vector<Numeric> >
   bool isApprox(
       const polynomial_t& other,
       const Numeric prec = Eigen::NumTraits<Numeric>::dummy_precision()) const {
-    return ndcurves::isApprox<num_t>(t_min_, other.min()) &&
-           ndcurves::isApprox<num_t>(t_max_, other.max()) &&
+    return EigenDoubleTraits<num_t>::isApprox(t_min_, other.min()) &&
+           EigenDoubleTraits<num_t>::isApprox(t_max_, other.max()) &&
            dim_ == other.dim() && degree_ == other.degree() &&
            coefficients_.isApprox(other.coefficients_, prec);
   }

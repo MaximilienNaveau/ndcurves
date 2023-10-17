@@ -16,16 +16,12 @@
 #include <functional>
 
 #include "MathDefs.h"
+#include "eigen_double_traits.h"
 #include "serialization/archive.hpp"
 #include "serialization/eigen-matrix.hpp"
 #include "serialization/registeration.hpp"
 
 namespace ndcurves {
-
-template <typename T>
-bool isApprox(const T a, const T b, const T eps = 1e-6) {
-  return fabs(a - b) < eps;
-}
 
 /// \struct curve_abc.
 /// \brief Represents a curve of dimension Dim.
@@ -90,8 +86,8 @@ struct curve_abc : public serialization::Serializable {
       const curve_t* other,
       const Numeric prec = Eigen::NumTraits<Numeric>::dummy_precision(),
       const size_t order = 5) const {
-    bool equal = ndcurves::isApprox<num_t>(min(), other->min()) &&
-                 ndcurves::isApprox<num_t>(max(), other->max()) &&
+    bool equal = EigenDoubleTraits<num_t>::isApprox(min(), other->min()) &&
+                 EigenDoubleTraits<num_t>::isApprox(max(), other->max()) &&
                  (dim() == other->dim());
     if (!equal) {
       return false;

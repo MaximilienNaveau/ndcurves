@@ -21,6 +21,7 @@
 #include "piecewise_curve.h"
 
 namespace ndcurves {
+
 /// \class BezierCurve.
 /// \brief Represents a Bezier curve of arbitrary dimension and order.
 /// For degree lesser than 4, the evaluation is analitycal. Otherwise
@@ -63,7 +64,7 @@ struct bezier_curve : public curve_abc<Time, Numeric, Safe, Point> {
   template <typename In>
   bezier_curve(In PointsBegin, In PointsEnd, const time_t T_min = 0.,
                const time_t T_max = 1., const time_t mult_T = 1.)
-      : dim_(PointsBegin->size()),
+      : dim_(EigenDoubleTraits<point_t>::getDim(*PointsBegin)),
         T_min_(T_min),
         T_max_(T_max),
         mult_T_(mult_T),
@@ -79,7 +80,7 @@ struct bezier_curve : public curve_abc<Time, Numeric, Safe, Point> {
           "can't create bezier min bound is higher than max bound");
     }
     for (; it != PointsEnd; ++it) {
-      if (Safe && static_cast<size_t>(it->size()) != dim_)
+      if (Safe && EigenDoubleTraits<point_t>::getDim(*it) != dim_)
         throw std::invalid_argument(
             "All the control points must have the same dimension.");
       control_points_.push_back(*it);
@@ -102,7 +103,7 @@ struct bezier_curve : public curve_abc<Time, Numeric, Safe, Point> {
   bezier_curve(In PointsBegin, In PointsEnd,
                const curve_constraints_t& constraints, const time_t T_min = 0.,
                const time_t T_max = 1., const time_t mult_T = 1.)
-      : dim_(PointsBegin->size()),
+      : dim_(EigenDoubleTraits<point_t>::getDim(*PointsBegin)),
         T_min_(T_min),
         T_max_(T_max),
         mult_T_(mult_T),
@@ -166,15 +167,16 @@ struct bezier_curve : public curve_abc<Time, Numeric, Safe, Point> {
   bool isApprox(
       const bezier_curve_t& other,
       const Numeric prec = Eigen::NumTraits<Numeric>::dummy_precision()) const {
-    bool equal = ndcurves::isApprox<num_t>(T_min_, other.min()) &&
-                 ndcurves::isApprox<num_t>(T_max_, other.max()) &&
+    bool equal = EigenDoubleTraits<num_t>::isApprox(T_min_, other.min()) &&
+                 EigenDoubleTraits<num_t>::isApprox(T_max_, other.max()) &&
                  dim_ == other.dim() && degree_ == other.degree() &&
                  size_ == other.size_ &&
-                 ndcurves::isApprox<Numeric>(mult_T_, other.mult_T_) &&
+                 EigenDoubleTraits<num_t>::isApprox(mult_T_, other.mult_T_) &&
                  bernstein_ == other.bernstein_;
     if (!equal) return false;
     for (size_t i = 0; i < size_; ++i) {
-      if (!control_points_.at(i).isApprox(other.control_points_.at(i), prec))
+      if (!EigenDoubleTraits<point_t>::isApprox(
+              control_points_.at(i), other.control_points_.at(i), prec))
         return false;
     }
     return true;
@@ -231,10 +233,11 @@ struct bezier_curve : public curve_abc<Time, Numeric, Safe, Point> {
 
   ///  \brief Compute the primitive of the curve at order N.
   ///  Computes the primitive at order N of bezier curve of parametric equation
-  ///  \f$x(t)\f$. <br> At order \f$N=1\f$, the primitve \f$X(t)\f$ of
+  ///  \f$x(t)\f$. <br> At order \f$N=1\f$, the primitive \f$X(t)\f$ of
   ///  \f$x(t)\f$ is such as \f$\frac{dX(t)}{dt} = x(t)\f$. \param order : order
-  ///  of the primitive. \param init  : constant valuefor the first point of the
-  ///  primitive (can tipycally be zero) \return primitive at order N of x(t).
+  ///  of the primitive. \param init  : constant value for the first point of
+  ///  the primitive (can typically be zero) \return primitive at order N of
+  ///  x(t).
   bezier_curve_t compute_primitive(const std::size_t order,
                                    const point_t& init) const {
     check_conditions();

@@ -197,8 +197,8 @@ struct SE3Curve : public curve_abc<Time, Numeric, Safe,
   bool isApprox(
       const SE3Curve_t& other,
       const Numeric prec = Eigen::NumTraits<Numeric>::dummy_precision()) const {
-    return ndcurves::isApprox<Numeric>(T_min_, other.min()) &&
-           ndcurves::isApprox<Numeric>(T_max_, other.max()) &&
+    return EigenDoubleTraits<Numeric>::isApprox(T_min_, other.min()) &&
+           EigenDoubleTraits<Numeric>::isApprox(T_max_, other.max()) &&
            (translation_curve_ == other.translation_curve_ ||
             translation_curve_->isApprox(other.translation_curve_.get(),
                                          prec)) &&

@@ -89,6 +89,7 @@ set(${PROJECT_NAME}_HEADERS
     include/${PROJECT_NAME}/curve_abc.h
     include/${PROJECT_NAME}/curve_constraint.h
     include/${PROJECT_NAME}/curve_conversion.h
+    include/${PROJECT_NAME}/eigen_double_traits.h
     include/${PROJECT_NAME}/exact_cubic.h
     include/${PROJECT_NAME}/fwd.h
     include/${PROJECT_NAME}/helpers/effector_spline.h

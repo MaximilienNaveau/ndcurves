@@ -131,8 +131,8 @@ struct cubic_hermite_spline : public curve_abc<Time, Numeric, Safe, Point> {
   bool isApprox(
       const cubic_hermite_spline_t& other,
       const Numeric prec = Eigen::NumTraits<Numeric>::dummy_precision()) const {
-    bool equal = ndcurves::isApprox<num_t>(T_min_, other.min()) &&
-                 ndcurves::isApprox<num_t>(T_max_, other.max()) &&
+    bool equal = EigenDoubleTraits<num_t>::isApprox(T_min_, other.min()) &&
+                 EigenDoubleTraits<num_t>::isApprox(T_max_, other.max()) &&
                  dim_ == other.dim() && degree_ == other.degree() &&
                  size_ == other.size() &&
                  time_control_points_ == other.time_control_points_ &&

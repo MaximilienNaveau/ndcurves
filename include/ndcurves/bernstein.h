@@ -56,9 +56,9 @@ struct Bern {
   /// equal. \param other : the other Bernstein polynomial to check. \return
   /// true if the two Bernstein polynomials are approximately equals.
   virtual bool operator==(const Bern& other) const {
-    return ndcurves::isApprox<Numeric>(m_minus_i, other.m_minus_i) &&
-           ndcurves::isApprox<Numeric>(i_, other.i_) &&
-           ndcurves::isApprox<Numeric>(bin_m_i_, other.bin_m_i_);
+    return EigenDoubleTraits<Numeric>::isApprox(m_minus_i, other.m_minus_i) &&
+           EigenDoubleTraits<Numeric>::isApprox(i_, other.i_) &&
+           EigenDoubleTraits<Numeric>::isApprox(bin_m_i_, other.bin_m_i_);
   }
 
   /// \brief Check if actual Bernstein polynomial and other are different.
